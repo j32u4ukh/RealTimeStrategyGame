@@ -8,7 +8,7 @@ public class UnitSelectionHandler : MonoBehaviour
 {
     [SerializeField] private LayerMask layer_mask = new LayerMask();
     private Camera main_camera;
-    private List<Unit> selected_units = new List<Unit>();
+    public List<Unit> selected_units { get; } = new List<Unit>();
 
     // Start is called before the first frame update
     void Start()
