@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class UnitMovement : NetworkBehaviour
 {
     [SerializeField] private NavMeshAgent agent = null;
-    private Camera main_canera;
+    private Camera main_camera;
 
     [Server]
     public void move(Vector3 destination)
@@ -33,7 +33,7 @@ public class UnitMovement : NetworkBehaviour
     #region Client
     public override void OnStartAuthority()
     {
-        main_canera = Camera.main;
+        main_camera = Camera.main;
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public class UnitMovement : NetworkBehaviour
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             // Input.mousePosition -> Mouse.current.position.ReadValue()
-            Ray ray = main_canera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Ray ray = main_camera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
             if(Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
             {
