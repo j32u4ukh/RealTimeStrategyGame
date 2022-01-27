@@ -7,10 +7,6 @@ public class UnitMovement : NetworkBehaviour
     [SerializeField] private NavMeshAgent agent = null;
     [SerializeField] private Targeter targeter = null;
     [SerializeField] private float chasing_distance = 10f;
-
-    // 應略大於 chasing_distance，才不會在 chasing_distance 時停下來，造成永遠無法進到攻擊區域中
-    [SerializeField] private float attacking_distance = 12f;
-
     private Targetable target;
 
     #region Server
