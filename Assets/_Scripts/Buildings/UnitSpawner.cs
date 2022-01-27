@@ -6,10 +6,27 @@ using UnityEngine.EventSystems;
 
 public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
 {
+    [SerializeField] private Health health = null;
     [SerializeField] private GameObject unit_prefab = null;
-    [SerializeField] private Transform spawn_point;
+    [SerializeField] private Transform spawn_point = null;
 
     #region Server
+    public override void OnStartServer()
+    {
+        health.onServerDie += handleServerDie;
+    }
+
+    public override void OnStopServer()
+    {
+        health.onServerDie -= handleServerDie;
+    }
+
+    [Server]
+    private void handleServerDie()
+    {
+        NetworkServer.Destroy(gameObject);
+    }
+
     [Command]
     private void cmdSpawnUnit()
     {
@@ -18,7 +35,6 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
         // connectionToClient: 當前連線的 Client
         NetworkServer.Spawn(unit, connectionToClient); 
     }
-
     #endregion
 
     #region Client

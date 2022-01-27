@@ -48,9 +48,10 @@ public class RTSPlayer : NetworkBehaviour
     #endregion
 
     #region Client
-    public override void OnStartClient()
+    public override void OnStartAuthority()
     {
-        if (!isClientOnly)
+        // server has been started
+        if (NetworkServer.active)
         {
             return;
         }
@@ -61,7 +62,8 @@ public class RTSPlayer : NetworkBehaviour
 
     public override void OnStopClient()
     {
-        if (!isClientOnly)
+        // 已知 Client 才能觸發相關事件，因此無須再次檢查 connectionId，但仍需檢查使否是所有者的 Client
+        if (!isClientOnly || !hasAuthority)
         {
             return;
         }
@@ -72,19 +74,12 @@ public class RTSPlayer : NetworkBehaviour
 
     private void handleAuthorityUnitSpawned(Unit unit)
     {
-        // 已知 Client 才能觸發相關事件，因此無須再次檢查 connectionId，但仍需檢查使否是所有者的 Client
-        if (hasAuthority)
-        {
-            units.Add(unit);
-        }
+        units.Add(unit); 
     }
 
     private void handleAuthorityUnitDespawned(Unit unit)
     {
-        if (hasAuthority)
-        {
-            units.Remove(unit);
-        }
+        units.Remove(unit);
     }
 
     #endregion

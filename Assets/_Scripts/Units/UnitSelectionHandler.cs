@@ -20,6 +20,7 @@ public class UnitSelectionHandler : MonoBehaviour
     void Start()
     {
         main_camera = Camera.main;
+        Unit.onAuthorityUnitDespawned += handleAuthorityUnitDespawned;
     }
 
     // Update is called once per frame
@@ -50,6 +51,11 @@ public class UnitSelectionHandler : MonoBehaviour
         {
             clearSelectionArea();
         }
+    }
+
+    private void OnDestroy()
+    {
+        Unit.onAuthorityUnitDespawned -= handleAuthorityUnitDespawned;
     }
 
     private void startSelectionArea()
@@ -134,5 +140,10 @@ public class UnitSelectionHandler : MonoBehaviour
         {
             selected_unit.select();
         }
+    }
+
+    private void handleAuthorityUnitDespawned(Unit unit)
+    {
+        selected_units.Remove(unit);
     }
 }
