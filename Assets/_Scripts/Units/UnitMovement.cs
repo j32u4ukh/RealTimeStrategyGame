@@ -6,20 +6,45 @@ public class UnitMovement : NetworkBehaviour
 {
     [SerializeField] private NavMeshAgent agent = null;
     [SerializeField] private Targeter targeter = null;
+    [SerializeField] private float chasing_distance = 10f;
+
+    // 應略大於 chasing_distance，才不會在 chasing_distance 時停下來，造成永遠無法進到攻擊區域中
+    [SerializeField] private float attacking_distance = 12f;
+
+    private Targetable target;
 
     #region Server
     // [ServerCallback]: 只在 Server 上執行，避免被 Client 端執行
     [ServerCallback]
     private void Update()
     {
-        if (!agent.hasPath)
+        target = targeter.getTarget();
+
+        // Chasing movement
+        if (target != null)
         {
-            return;
+            if ((target.transform.position - transform.position).sqrMagnitude > chasing_distance * chasing_distance)
+            {
+                agent.SetDestination(target.transform.position);
+            }
+            else if (agent.hasPath)
+            {
+                agent.ResetPath();
+            }
         }
 
-        if(agent.remainingDistance <= agent.stoppingDistance)
+        // Normal movement
+        else
         {
-            agent.ResetPath();
+            if (!agent.hasPath)
+            {
+                return;
+            }
+
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                agent.ResetPath();
+            }
         }
     }
 
