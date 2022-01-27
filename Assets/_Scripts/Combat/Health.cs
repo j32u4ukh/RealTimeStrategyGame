@@ -7,9 +7,10 @@ using UnityEngine;
 public class Health : NetworkBehaviour
 {
     [SerializeField] private int max_health = 100;
-    [SyncVar] private int current_health;
+    [SyncVar(hook = nameof(handleHealthUpdated))] private int current_health;
 
     public event Action onServerDie;
+    public event Action<int, int> onClientHealthUpdated;
 
     #region Server
     public override void OnStartServer()
@@ -36,5 +37,9 @@ public class Health : NetworkBehaviour
     #endregion
 
     #region Client
+    private void handleHealthUpdated(int origin_health, int new_health)
+    {
+        onClientHealthUpdated?.Invoke(new_health, max_health);
+    }
     #endregion
 }
