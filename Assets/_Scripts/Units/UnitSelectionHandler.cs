@@ -54,12 +54,15 @@ public class UnitSelectionHandler : MonoBehaviour
 
     private void startSelectionArea()
     {
-        foreach (Unit selected_unit in selected_units)
+        if (!Keyboard.current.leftShiftKey.isPressed)
         {
-            selected_unit.deselect();
-        }
+            foreach (Unit selected_unit in selected_units)
+            {
+                selected_unit.deselect();
+            }
 
-        selected_units.Clear();
+            selected_units.Clear();
+        }
 
         unit_selection_area.gameObject.SetActive(true);
         start_position = Mouse.current.position.ReadValue();
@@ -98,6 +101,11 @@ public class UnitSelectionHandler : MonoBehaviour
                     return;
                 }
 
+                if (selected_units.Contains(unit))
+                {
+                    return;
+                }
+
                 selected_units.Add(unit);
             }
         }
@@ -108,9 +116,14 @@ public class UnitSelectionHandler : MonoBehaviour
 
             foreach(Unit unit in player.getUnits())
             {
+                if (selected_units.Contains(unit))
+                {
+                    continue;
+                }
+
                 Vector3 pos = main_camera.WorldToScreenPoint(unit.transform.position);
 
-                if((min.x <= pos.x) && (pos.x <= max.x) && (min.y <= pos.y) && (pos.y <= max.y))
+                if ((min.x <= pos.x) && (pos.x <= max.x) && (min.y <= pos.y) && (pos.y <= max.y))
                 {
                     selected_units.Add(unit);
                 }

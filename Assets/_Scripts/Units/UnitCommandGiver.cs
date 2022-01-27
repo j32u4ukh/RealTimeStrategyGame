@@ -26,11 +26,25 @@ public class UnitCommandGiver : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layer_mask))
             {
-                tryMove(hit.point);
+                if(hit.collider.TryGetComponent<Targetable>(out Targetable target))
+                {
+                    if (target.hasAuthority)
+                    {
+                        tryMove(hit.point);
+                    }
+                    else
+                    {
+                        tryTarget(target);
+                    }
+                }
+                else
+                {
+                    tryMove(hit.point);
+                }
             }
         }
     }
-
+    
     private void tryMove(Vector3 point)
     {
         foreach(Unit unit in unit_selection_handler.selected_units)
@@ -38,4 +52,13 @@ public class UnitCommandGiver : MonoBehaviour
             unit.getUnitMovement().cmdMove(point);
         }
     }
+
+    private void tryTarget(Targetable target)
+    {
+        foreach (Unit unit in unit_selection_handler.selected_units)
+        {
+            unit.getTargeter().cmdSetTarget(target.gameObject);
+        }
+    }
+
 }
