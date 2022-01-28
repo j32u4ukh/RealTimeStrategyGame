@@ -310,7 +310,7 @@ MonoBehaviour:
   unit_selection_area: {fileID: 2114160505}
   layer_mask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 256
 --- !u!4 &654636947
 Transform:
   m_ObjectHideFlags: 0
@@ -341,7 +341,7 @@ MonoBehaviour:
   unit_selection_handler: {fileID: 654636946}
   layer_mask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1281
 --- !u!1001 &688292739
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -497,8 +497,8 @@ GameObject:
   - component: {fileID: 786530065}
   - component: {fileID: 786530064}
   - component: {fileID: 786530063}
-  m_Layer: 0
-  m_Name: Cube
+  m_Layer: 10
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
