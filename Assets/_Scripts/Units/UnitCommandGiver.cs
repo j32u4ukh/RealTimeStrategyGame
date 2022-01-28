@@ -14,6 +14,7 @@ public class UnitCommandGiver : MonoBehaviour
     void Start()
     {
         main_camera = Camera.main;
+        GameOverHandler.onClientGameOver += handleClientGameOver;
     }
 
     // Update is called once per frame
@@ -44,7 +45,12 @@ public class UnitCommandGiver : MonoBehaviour
             }
         }
     }
-    
+
+    private void OnDestroy()
+    {
+        GameOverHandler.onClientGameOver -= handleClientGameOver;
+    }
+
     private void tryMove(Vector3 point)
     {
         foreach(Unit unit in unit_selection_handler.selected_units)
@@ -61,4 +67,8 @@ public class UnitCommandGiver : MonoBehaviour
         }
     }
 
+    private void handleClientGameOver(string winner_name)
+    {
+        enabled = false;
+    }
 }

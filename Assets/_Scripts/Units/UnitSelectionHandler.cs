@@ -21,6 +21,7 @@ public class UnitSelectionHandler : MonoBehaviour
     {
         main_camera = Camera.main;
         Unit.onAuthorityUnitDespawned += handleAuthorityUnitDespawned;
+        GameOverHandler.onClientGameOver += handleClientGameOver;
     }
 
     // Update is called once per frame
@@ -56,6 +57,7 @@ public class UnitSelectionHandler : MonoBehaviour
     private void OnDestroy()
     {
         Unit.onAuthorityUnitDespawned -= handleAuthorityUnitDespawned;
+        GameOverHandler.onClientGameOver -= handleClientGameOver;
     }
 
     private void startSelectionArea()
@@ -145,5 +147,10 @@ public class UnitSelectionHandler : MonoBehaviour
     private void handleAuthorityUnitDespawned(Unit unit)
     {
         selected_units.Remove(unit);
+    }
+
+    private void handleClientGameOver(string winner_name)
+    {
+        enabled = false;
     }
 }

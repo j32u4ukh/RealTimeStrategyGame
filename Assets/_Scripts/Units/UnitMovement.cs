@@ -10,6 +10,22 @@ public class UnitMovement : NetworkBehaviour
     private Targetable target;
 
     #region Server
+    public override void OnStartServer()
+    {
+        GameOverHandler.onServerGameOver += handleServerGameOver;
+    }
+
+    public override void OnStopServer()
+    {
+        GameOverHandler.onServerGameOver -= handleServerGameOver;
+    }
+
+    [Server]
+    private void handleServerGameOver()
+    {
+        agent.ResetPath();
+    }
+
     // [ServerCallback]: 只在 Server 上執行，避免被 Client 端執行
     [ServerCallback]
     private void Update()

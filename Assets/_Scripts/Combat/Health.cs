@@ -16,6 +16,7 @@ public class Health : NetworkBehaviour
     public override void OnStartServer()
     {
         current_health = max_health;
+        UnitBase.onServerPlayerDie += handleServerPlayerDie;
     }
 
     [Server]
@@ -32,6 +33,23 @@ public class Health : NetworkBehaviour
         {
             onServerDie?.Invoke();            
         }
+    }
+
+    public override void OnStopServer()
+    {
+        UnitBase.onServerPlayerDie -= handleServerPlayerDie;
+    }
+
+    [Server]
+    private void handleServerPlayerDie(int client_id)
+    {
+        if(connectionToClient.connectionId != client_id)
+        {
+            return;
+        }
+
+        // When unitbase die, all tanks will die.
+        dealDamage(current_health);
     }
     #endregion
 
