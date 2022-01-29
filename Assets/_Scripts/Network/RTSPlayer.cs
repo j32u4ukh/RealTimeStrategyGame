@@ -6,6 +6,8 @@ using System;
 
 public class RTSPlayer : NetworkBehaviour
 {
+    [SerializeField] private Building[] building_templates = new Building[0];
+
     private List<Unit> units = new List<Unit>();
     private List<Building> buildings = new List<Building>();
 
@@ -34,6 +36,27 @@ public class RTSPlayer : NetworkBehaviour
         Unit.onServerUnitDespawned -= handleServerUnitDespawned;
         Building.onServerBuildingSpawned -= handleServerBuildingSpawned;
         Building.onServerBuildingDespawned -= handleServerBuildingDespawned;
+    }
+
+    [Command]
+    public void cmdTryPlaceBuilding(int building_id, Vector3 location)
+    {
+        Building building = null;
+
+        foreach(Building template in building_templates)
+        {
+            if (template.getId().Equals(building_id))
+            {
+                building = template;
+                break;
+            }
+        }
+
+        if(building != null)
+        {
+            GameObject building_instance = Instantiate(building.gameObject, location, building.transform.rotation);
+            NetworkServer.Spawn(building_instance, connectionToClient);
+        }
     }
 
     private void handleServerUnitSpawned(Unit unit)
