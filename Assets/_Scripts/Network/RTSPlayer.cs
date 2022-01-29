@@ -7,6 +7,9 @@ using System;
 public class RTSPlayer : NetworkBehaviour
 {
     [SerializeField] private Building[] building_templates = new Building[0];
+    [SyncVar(hook = nameof(handleClientResourcesUpdated))] private int resources = 500;
+
+    public event Action<int> onClientResourcesUpdated;
 
     private List<Unit> units = new List<Unit>();
     private List<Building> buildings = new List<Building>();
@@ -21,7 +24,18 @@ public class RTSPlayer : NetworkBehaviour
         return buildings;
     }
 
+    public int getResources()
+    {
+        return resources;
+    }
+
     #region Server
+    [Server]
+    public void setResources(int resources)
+    {
+        this.resources = resources;
+    }
+
     public override void OnStartServer()
     {
         Unit.onServerUnitSpawned += handleServerUnitSpawned;
@@ -98,6 +112,7 @@ public class RTSPlayer : NetworkBehaviour
 
         buildings.Remove(building);
     }
+
     #endregion
 
     #region Client
@@ -147,6 +162,12 @@ public class RTSPlayer : NetworkBehaviour
     private void handleAuthorityBuildingDespawned(Building building)
     {
         buildings.Remove(building);
+    }
+
+    private void handleClientResourcesUpdated(int origin_value, int new_value)
+    {
+        //resources = new_value;
+        onClientResourcesUpdated?.Invoke(new_value);
     }
     #endregion
 }
