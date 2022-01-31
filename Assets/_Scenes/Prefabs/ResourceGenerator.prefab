@@ -85,7 +85,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResourcegeneratorPreview
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3607133999884334437, guid: 330aaa74c395c84499eb09511f9b104d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 330aaa74c395c84499eb09511f9b104d, type: 3}
 --- !u!1 &3673602469886674128 stripped
 GameObject:
