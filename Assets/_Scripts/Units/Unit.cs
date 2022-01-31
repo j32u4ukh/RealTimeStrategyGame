@@ -7,6 +7,7 @@ using System;
 
 public class Unit : NetworkBehaviour
 {
+    [SerializeField] private int resource_cost = 10;
     [SerializeField] private UnitMovement unit_movement = null;
     [SerializeField] private Health health = null;
     [SerializeField] private Targeter targeter = null;
@@ -20,6 +21,11 @@ public class Unit : NetworkBehaviour
     // On client
     public static event Action<Unit> onAuthorityUnitSpawned;
     public static event Action<Unit> onAuthorityUnitDespawned;
+
+    public int getResourceCost()
+    {
+        return resource_cost;
+    }
 
     public UnitMovement getUnitMovement()
     {
