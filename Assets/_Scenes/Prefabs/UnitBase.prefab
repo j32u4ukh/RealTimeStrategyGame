@@ -166,6 +166,14 @@ PrefabInstance:
       propertyPath: m_AssetId
       value: 483a2fd15006c994f9938dc71beba668
       objectReference: {fileID: 0}
+    - target: {fileID: 3308810326452055755, guid: 6d5c6c2a59568d64dadef12992c31039, type: 3}
+      propertyPath: color_renderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308810326452055755, guid: 6d5c6c2a59568d64dadef12992c31039, type: 3}
+      propertyPath: color_renderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 6523202182606235716}
     - target: {fileID: 3356144651243713465, guid: 6d5c6c2a59568d64dadef12992c31039, type: 3}
       propertyPath: m_Name
       value: UnitBase

@@ -14,8 +14,14 @@ public class RTSPlayer : NetworkBehaviour
 
     public event Action<int> onClientResourcesUpdated;
 
+    private Color team_color = new Color();
     private List<Unit> units = new List<Unit>();
     private List<Building> buildings = new List<Building>();
+
+    public Color getTeamColor()
+    {
+        return team_color;
+    }
 
     public List<Unit> getUnits()
     {
@@ -32,6 +38,12 @@ public class RTSPlayer : NetworkBehaviour
         return resources;
     }
 
+    /// <summary>
+    /// TODO: 不知為何 Physics.CheckBox 一直被觸發，但明明沒有重疊
+    /// </summary>
+    /// <param name="building_collider"></param>
+    /// <param name="location"></param>
+    /// <returns></returns>
     public bool canPlaceBuilding(BoxCollider building_collider, Vector3 location)
     {
         if (Physics.CheckBox(location + building_collider.center,
@@ -61,6 +73,12 @@ public class RTSPlayer : NetworkBehaviour
     public void setResources(int resources)
     {
         this.resources = resources;
+    }
+
+    [Server]
+    public void setTeamColor(Color color)
+    {
+        team_color = color;
     }
 
     public override void OnStartServer()

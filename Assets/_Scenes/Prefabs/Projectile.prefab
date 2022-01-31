@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7583374994978792323}
   - component: {fileID: 5134163527909570618}
   - component: {fileID: 7394446418826049224}
+  - component: {fileID: 2016448708638832577}
   m_Layer: 7
   m_Name: Projectile
   m_TagString: Untagged
@@ -149,3 +150,19 @@ MonoBehaviour:
   damage_to_deal: 20
   lunch_force: 10
   life_time: 5
+--- !u!114 &2016448708638832577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4237354768051753904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81fc7e41ba4a3df47bebae9c5180ae78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  color_renderers:
+  - {fileID: 6927097629660057432}
