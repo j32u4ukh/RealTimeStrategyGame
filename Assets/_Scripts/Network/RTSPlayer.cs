@@ -6,7 +6,10 @@ using System;
 
 public class RTSPlayer : NetworkBehaviour
 {
+    [SerializeField] private LayerMask building_block_layer = new LayerMask();
     [SerializeField] private Building[] building_templates = new Building[0];
+    [SerializeField] private float building_range_limit = 5f;
+
     [SyncVar(hook = nameof(handleClientResourcesUpdated))] private int resources = 500;
 
     public event Action<int> onClientResourcesUpdated;
@@ -27,6 +30,30 @@ public class RTSPlayer : NetworkBehaviour
     public int getResources()
     {
         return resources;
+    }
+
+    public bool canPlaceBuilding(BoxCollider building_collider, Vector3 location)
+    {
+        if (Physics.CheckBox(location + building_collider.center,
+                            building_collider.size / 2,
+                            Quaternion.identity,
+                            building_block_layer))
+        {
+            Debug.Log($"false, Physics.CheckBox");
+            return false;
+        }
+
+        foreach (Building building in buildings)
+        {
+            if ((location - building.transform.position).sqrMagnitude <= (building_range_limit * building_range_limit))
+            {
+                Debug.Log($"location: {location}, building: {building.transform.position}");
+                return true;
+            }
+        }
+
+        Debug.Log($"false, too far");
+        return false;
     }
 
     #region Server
@@ -55,21 +82,34 @@ public class RTSPlayer : NetworkBehaviour
     [Command]
     public void cmdTryPlaceBuilding(int building_id, Vector3 location)
     {
-        Building building = null;
+        Building building_to_place = null;
 
         foreach(Building template in building_templates)
         {
             if (template.getId().Equals(building_id))
             {
-                building = template;
+                building_to_place = template;
                 break;
             }
         }
 
-        if(building != null)
+        if(building_to_place == null)
         {
-            GameObject building_instance = Instantiate(building.gameObject, location, building.transform.rotation);
+            return;
+        }
+
+        if(resources < building_to_place.getPrice())
+        {
+            return;
+        }
+
+        BoxCollider building_collider = building_to_place.GetComponent <BoxCollider>();
+   
+        if (canPlaceBuilding(building_collider, location))
+        {
+            GameObject building_instance = Instantiate(building_to_place.gameObject, location, building_to_place.transform.rotation);
             NetworkServer.Spawn(building_instance, connectionToClient);
+            setResources(resources - building_to_place.getPrice());
         }
     }
 

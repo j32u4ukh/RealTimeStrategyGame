@@ -81,7 +81,8 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
         NetworkServer.Spawn(unit, connectionToClient);
 
         Vector3 spawn_offset = Random.insideUnitSphere * spawn_move_range;
-        spawn_offset.y = spawn_point.position.y;
+        //spawn_offset.y = spawn_point.position.y;
+        spawn_offset.y = 0f;
 
         UnitMovement movement = unit.GetComponent<UnitMovement>();
         movement.serverMove(spawn_point.position + spawn_offset);
