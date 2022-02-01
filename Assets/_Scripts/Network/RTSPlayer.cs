@@ -6,6 +6,7 @@ using System;
 
 public class RTSPlayer : NetworkBehaviour
 {
+    [SerializeField] private Transform camera_transform = null;
     [SerializeField] private LayerMask building_block_layer = new LayerMask();
     [SerializeField] private Building[] building_templates = new Building[0];
     [SerializeField] private float building_range_limit = 5f;
@@ -17,6 +18,11 @@ public class RTSPlayer : NetworkBehaviour
     private Color team_color = new Color();
     private List<Unit> units = new List<Unit>();
     private List<Building> buildings = new List<Building>();
+
+    public Transform getCameraTransform()
+    {
+        return camera_transform;
+    }
 
     public Color getTeamColor()
     {

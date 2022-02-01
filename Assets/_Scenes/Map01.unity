@@ -1273,10 +1273,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MinimapDisplay
       objectReference: {fileID: 0}
-    - target: {fileID: 4471361784495000171, guid: daced27fd35f7754fb53aeb17d16510a, type: 3}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 8400000, guid: 31591766595541a46b086ffc81bd5fe5, type: 2}
     - target: {fileID: 6079036408078852575, guid: daced27fd35f7754fb53aeb17d16510a, type: 3}
       propertyPath: m_RootOrder
       value: 4
