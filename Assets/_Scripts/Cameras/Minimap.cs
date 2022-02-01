@@ -17,6 +17,7 @@ public class Minimap : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         if(camera_transform == null)
         {
+            // May cause "NullReferenceException: Object reference not set to an instance of an object"
             NetworkIdentity identity = NetworkClient.connection.identity;
 
             if (identity != null)
