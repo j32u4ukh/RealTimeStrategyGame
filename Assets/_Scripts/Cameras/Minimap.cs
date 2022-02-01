@@ -18,11 +18,11 @@ public class Minimap : MonoBehaviour, IPointerDownHandler, IDragHandler
         if(camera_transform == null)
         {
             // May cause "NullReferenceException: Object reference not set to an instance of an object"
-            NetworkIdentity identity = NetworkClient.connection.identity;
+            //NetworkIdentity identity = NetworkClient.connection.identity;
 
-            if (identity != null)
+            if (NetworkClient.connection.identity != null)
             {
-                camera_transform = identity.GetComponent<RTSPlayer>().getCameraTransform();
+                camera_transform = NetworkClient.connection.identity.GetComponent<RTSPlayer>().getCameraTransform();
             }
         }
     }

@@ -57,7 +57,6 @@ public class RTSPlayer : NetworkBehaviour
                             Quaternion.identity,
                             building_block_layer))
         {
-            Debug.Log($"false, Physics.CheckBox");
             return false;
         }
 
@@ -65,12 +64,10 @@ public class RTSPlayer : NetworkBehaviour
         {
             if ((location - building.transform.position).sqrMagnitude <= (building_range_limit * building_range_limit))
             {
-                Debug.Log($"location: {location}, building: {building.transform.position}");
                 return true;
             }
         }
 
-        Debug.Log($"false, too far");
         return false;
     }
 
