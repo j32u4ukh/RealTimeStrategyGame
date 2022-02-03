@@ -12,12 +12,20 @@ public class RTSPlayer : NetworkBehaviour
     [SerializeField] private float building_range_limit = 5f;
 
     [SyncVar(hook = nameof(handleClientResourcesUpdated))] private int resources = 500;
+    [SyncVar(hook = nameof(handleAuthorityPartyOwnerStateUpdated))] private bool is_party_owner = false;
 
     public event Action<int> onClientResourcesUpdated;
-
+    public static event Action<bool> onAuthorityPartyOwnerStateUpdated;
+    
     private Color team_color = new Color();
     private List<Unit> units = new List<Unit>();
     private List<Building> buildings = new List<Building>();
+
+
+    public bool getIsPartyOwner()
+    {
+        return is_party_owner;
+    }
 
     public Transform getCameraTransform()
     {
@@ -79,6 +87,12 @@ public class RTSPlayer : NetworkBehaviour
     }
 
     [Server]
+    public void setPartyOwner(bool is_owner)
+    {
+        is_party_owner = is_owner;
+    }
+
+    [Server]
     public void setTeamColor(Color color)
     {
         team_color = color;
@@ -98,6 +112,15 @@ public class RTSPlayer : NetworkBehaviour
         Unit.onServerUnitDespawned -= handleServerUnitDespawned;
         Building.onServerBuildingSpawned -= handleServerBuildingSpawned;
         Building.onServerBuildingDespawned -= handleServerBuildingDespawned;
+    }
+
+    [Command]
+    public void cmdStartGame()
+    {
+        if (is_party_owner)
+        {
+            ((RTSNetworkManager)NetworkManager.singleton).startGame();
+        }
     }
 
     [Command]
@@ -191,10 +214,29 @@ public class RTSPlayer : NetworkBehaviour
         Building.onAuthorityBuildingDespawned += handleAuthorityBuildingDespawned;
     }
 
+    public override void OnStartClient()
+    {
+        // server has been started
+        if (NetworkServer.active)
+        {
+            return;
+        }
+
+        ((RTSNetworkManager)NetworkManager.singleton).players.Add(this);
+    }
+
     public override void OnStopClient()
     {
-        // 已知 Client 才能觸發相關事件，因此無須再次檢查 connectionId，但仍需檢查使否是所有者的 Client
-        if (!isClientOnly || !hasAuthority)
+        // 已知 Client 才能觸發相關事件，因此無須再次檢查 connectionId
+        if (!isClientOnly)
+        {
+            return;
+        }
+
+        ((RTSNetworkManager)NetworkManager.singleton).players.Remove(this);
+
+        // 檢查使否是所有者的 Client
+        if (!hasAuthority)
         {
             return;
         }
@@ -229,6 +271,14 @@ public class RTSPlayer : NetworkBehaviour
     {
         //resources = new_value;
         onClientResourcesUpdated?.Invoke(new_value);
+    }
+
+    private void handleAuthorityPartyOwnerStateUpdated(bool origin_state, bool new_state)
+    {
+        if (hasAuthority)
+        {
+            onAuthorityPartyOwnerStateUpdated?.Invoke(new_state);
+        }
     }
     #endregion
 }
