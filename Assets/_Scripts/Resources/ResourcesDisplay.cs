@@ -10,26 +10,11 @@ public class ResourcesDisplay : MonoBehaviour
     [SerializeField] private TMP_Text resources_text = null;
     private RTSPlayer player;
 
-    private void Update()
+    private void Start()
     {
-        // TODO: Build player object at the scene before current scene to avoid NullReferenceException.
-        if (player == null)
-        {
-            try
-            {
-                player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-
-                if (player != null)
-                {
-                    handleClientResourcesUpdated(player.getResources());
-                    player.onClientResourcesUpdated += handleClientResourcesUpdated;
-                }
-            }
-            catch (NullReferenceException)
-            {
-
-            }
-        }
+        player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+        handleClientResourcesUpdated(player.getResources());
+        player.onClientResourcesUpdated += handleClientResourcesUpdated;
     }
 
     private void OnDestroy()

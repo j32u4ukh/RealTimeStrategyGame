@@ -13,14 +13,20 @@ public class RTSPlayer : NetworkBehaviour
 
     [SyncVar(hook = nameof(handleClientResourcesUpdated))] private int resources = 500;
     [SyncVar(hook = nameof(handleAuthorityPartyOwnerStateUpdated))] private bool is_party_owner = false;
+    [SyncVar(hook = nameof(handleClientDisplayNameUpdated))] private string display_name;
 
     public event Action<int> onClientResourcesUpdated;
     public static event Action<bool> onAuthorityPartyOwnerStateUpdated;
+    public static event Action onClientInfoUpdated;
     
     private Color team_color = new Color();
     private List<Unit> units = new List<Unit>();
     private List<Building> buildings = new List<Building>();
 
+    public string getDisplayName()
+    {
+        return display_name;
+    }
 
     public bool getIsPartyOwner()
     {
@@ -98,12 +104,20 @@ public class RTSPlayer : NetworkBehaviour
         team_color = color;
     }
 
+    [Server]
+    public void setDisplayName(string display_name)
+    {
+        this.display_name = display_name;
+    }
+
     public override void OnStartServer()
     {
         Unit.onServerUnitSpawned += handleServerUnitSpawned;
         Unit.onServerUnitDespawned += handleServerUnitDespawned;
         Building.onServerBuildingSpawned += handleServerBuildingSpawned;
         Building.onServerBuildingDespawned += handleServerBuildingDespawned;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public override void OnStopServer()
@@ -222,11 +236,15 @@ public class RTSPlayer : NetworkBehaviour
             return;
         }
 
+        DontDestroyOnLoad(gameObject);
+
         ((RTSNetworkManager)NetworkManager.singleton).players.Add(this);
     }
 
     public override void OnStopClient()
     {
+        onClientInfoUpdated?.Invoke();
+
         // 已知 Client 才能觸發相關事件，因此無須再次檢查 connectionId
         if (!isClientOnly)
         {
@@ -271,6 +289,11 @@ public class RTSPlayer : NetworkBehaviour
     {
         //resources = new_value;
         onClientResourcesUpdated?.Invoke(new_value);
+    }
+
+    private void handleClientDisplayNameUpdated(string origin_name, string new_name)
+    {
+        onClientInfoUpdated?.Invoke();
     }
 
     private void handleAuthorityPartyOwnerStateUpdated(bool origin_state, bool new_state)

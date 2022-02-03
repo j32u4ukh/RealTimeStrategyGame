@@ -20,6 +20,8 @@ public class UnitSelectionHandler : MonoBehaviour
     void Start()
     {
         main_camera = Camera.main;
+        player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+
         Unit.onAuthorityUnitDespawned += handleAuthorityUnitDespawned;
         GameOverHandler.onClientGameOver += handleClientGameOver;
     }
@@ -27,19 +29,6 @@ public class UnitSelectionHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // TODO: Build player object at the scene before current scene to avoid NullReferenceException.
-        if (player == null)
-        {
-            try
-            {
-                player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-            }
-            catch (NullReferenceException)
-            {
-
-            }
-        }
-
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             startSelectionArea();

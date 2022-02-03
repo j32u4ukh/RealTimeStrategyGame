@@ -63,6 +63,7 @@ public class RTSNetworkManager : NetworkManager
                                       Random.Range(0f, 1f)));
 
         players.Add(player);
+        player.setDisplayName($"Player {players.Count}");
 
         player.setPartyOwner(players.Count == 1);
     }

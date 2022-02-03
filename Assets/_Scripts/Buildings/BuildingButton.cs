@@ -26,24 +26,13 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         main_camera = Camera.main;
         icon_image.sprite = building.getIcon();
         price_text.text = building.getPrice().ToString();
+
+        player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
         building_collider = building.GetComponent<BoxCollider>();
     }
 
     private void Update()
     {
-        // TODO: Build player object at the scene before current scene to avoid NullReferenceException.
-        if (player == null)
-        {
-            try
-            {
-                player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-            }
-            catch (NullReferenceException)
-            {
-
-            }
-        }
-
         if (building_preview_instance != null)
         {
             updateBuildingPreview();
