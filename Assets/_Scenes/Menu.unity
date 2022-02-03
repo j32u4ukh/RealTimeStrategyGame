@@ -390,7 +390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3981474147140451166, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
       propertyPath: spawnPrefabs.Array.size
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3981474147140451166, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
       propertyPath: spawnPrefabs.Array.data[0]
@@ -416,5 +416,29 @@ PrefabInstance:
       propertyPath: spawnPrefabs.Array.data[5]
       value: 
       objectReference: {fileID: 957289496542751618, guid: 679f320c623207a408195b4ad2a19088, type: 3}
+    - target: {fileID: 3981474147140451166, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
+      propertyPath: spawnPrefabs.Array.data[6]
+      value: 
+      objectReference: {fileID: 5842447560621567545, guid: e41b4bc0bd24c04408c92d174b9830cd, type: 3}
+    - target: {fileID: 3981474147140451166, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
+      propertyPath: spawnPrefabs.Array.data[7]
+      value: 
+      objectReference: {fileID: 9093450238624452134, guid: c3922307f7dd5e34c8444b392b84eadd, type: 3}
+    - target: {fileID: 3981474147140451166, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
+      propertyPath: spawnPrefabs.Array.data[8]
+      value: 
+      objectReference: {fileID: 4259120267897816937, guid: ac6c86d0418b5c847a7113fdc6992c0d, type: 3}
+    - target: {fileID: 3981474147140451166, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
+      propertyPath: spawnPrefabs.Array.data[9]
+      value: 
+      objectReference: {fileID: 604253599435573312, guid: ef5d4e0e4c76fc0438137dbd1c7c2de9, type: 3}
+    - target: {fileID: 3981474147140451166, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
+      propertyPath: spawnPrefabs.Array.data[10]
+      value: 
+      objectReference: {fileID: 8005439017379857842, guid: d8215ba366a46174d97499ad23e6f526, type: 3}
+    - target: {fileID: 3981474147140451166, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
+      propertyPath: spawnPrefabs.Array.data[11]
+      value: 
+      objectReference: {fileID: 2460787816217735311, guid: 853a8b5876b8e3646b7d5482b4486e4f, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 127e20f55fadb4244b27239dc2d65c7a, type: 3}
